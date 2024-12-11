@@ -13,7 +13,7 @@ h1 {
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-p{
+p {
     text-align: center;
     font-size: 2.0rem;
     margin: 20px 0;
@@ -22,17 +22,25 @@ p{
 
 .image-container {
     display: flex;
-    justify-content: center; /* Horizontally centers the content */
-    margin-top: 20px; /* Adds spacing above the image */
-    margin-bottom: 20px; /* Adds spacing below the image */
+    justify-content: center;
+    /* Horizontally centers the content */
+    margin-top: 20px;
+    /* Adds spacing above the image */
+    margin-bottom: 20px;
+    /* Adds spacing below the image */
 }
 
 .centered-image {
-    width: 35%; /* Scales the image to 20% of its container's width */
-    max-width: 35%; /* Ensures the image doesn't become too large */
-    height: auto; /* Maintains aspect ratio */
-    border-radius: 10px; /* Optional: rounds the corners of the image */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
+    width: 35%;
+    /* Scales the image to 20% of its container's width */
+    max-width: 35%;
+    /* Ensures the image doesn't become too large */
+    height: auto;
+    /* Maintains aspect ratio */
+    border-radius: 10px;
+    /* Optional: rounds the corners of the image */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /* Optional: adds a subtle shadow */
 }
 
 
@@ -102,26 +110,31 @@ table th {
 }
 
 table tr:nth-child(even) {
-    background-color: #e8f4fd; /* Light blue for even rows */
+    background-color: #e8f4fd;
+    /* Light blue for even rows */
 }
 
 table tr:nth-child(odd) {
-    background-color: #ffffff; /* White for odd rows */
+    background-color: #ffffff;
+    /* White for odd rows */
 }
 
 table tr:hover {
-    background-color: #d1ecf9; /* Highlighted blue on hover for better visibility */
+    background-color: #d1ecf9;
+    /* Highlighted blue on hover for better visibility */
 }
 
 table td img {
     display: block;
-    margin: 0 auto; /* Center the icons in the table cells */
+    margin: 0 auto;
+    /* Center the icons in the table cells */
 }
 
 .chart-section {
     max-width: 1500px;
     margin: 40px auto;
     text-align: center;
+
 }
 
 .chart-container {
@@ -130,19 +143,19 @@ table td img {
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     margin: 0 auto;
-    width: 80%;
+    width: 60%;
 }
 
 .chart-container canvas {
     display: block;
     margin: 0 auto;
-    width: 100%;
+    width: 80%;
     height: 1000px;
 }
 
-  .list-group-item {
+.list-group-item {
     font-size: 16px;
-  }
+}
 
 .error {
     color: red;
