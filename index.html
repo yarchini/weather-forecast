@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('wallpaper.jpg') no-repeat center center/cover;
+        }
+
+        .welcome-container {
+            text-align: center;
+            background: rgba(65, 64, 64, 0.6);
+            padding: 40px;
+            border-radius: 10px;
+            color: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .welcome-button {
+            padding: 15px 30px;
+            font-size: 1rem;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        .welcome-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="welcome-container">
+        <h1>Welcome to Weather App</h1>
+        <p>Your reliable weather forecast companion.</p>
+        <button class="welcome-button" onclick="goToMainPage()">Click here</button>
+    </div>
+
+    <script>
+        function goToMainPage() {
+            // Redirect to the main page
+            window.location.href = 'index.html'; // Replace with your actual main page file
+        }
+    </script>
+</body>
+
+</html>
