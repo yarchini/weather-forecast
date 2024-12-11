@@ -18,7 +18,7 @@ async function getWeather() {
             throw new Error(data.message || "City not found");
         }
 
-        document.getElementById("cityNameDisplay").innerHTML = city;
+        document.getElementById("cityNameDisplay").textContent = city;
 
         forecastData = data.list.slice(0, 8).map(item => ({
             dateTime: item.dt_txt,
@@ -27,50 +27,47 @@ async function getWeather() {
             icon: item.weather[0].icon,
         }));
 
-        const tableRows = forecastData.map(item => `
-                  <tr>
-                    <td>${item.dateTime}</td>
-                    <td>${item.temperature} °C</td>
-                    <td>
-                      ${item.weatherDescription} <br>
-                      <img src="http://openweathermap.org/img/wn/${item.icon}@2x.png" alt="${item.weatherDescription}">
-                    </td>
-                  </tr>
-                `).join("");
-
-        document.getElementById("weatherOutput").innerHTML = `
-                  <table>
-                    <tr>
-                      <th>Date-Time</th>
-                      <th>Temperature (°C)</th>
-                      <th>Weather Description</th>
-                    </tr>
-                    ${tableRows}
-                  </table>
-                `;
-
-        if (weatherChart) {
-            weatherChart.destroy();
-            weatherChart = null;
-        }
+        renderWeatherTable();
+        renderWeatherChart();
     } catch (error) {
         document.getElementById("weatherOutput").innerHTML = `
-                  <div class="error">Error: ${error.message}</div>
-                `;
+            <div class="error">Error: ${error.message}</div>
+        `;
     }
 }
 
-function displayChart() {
-    if (!forecastData.length) {
-        alert("Please fetch weather data first!");
-        return;
-    }
+function renderWeatherTable() {
+    const tableRows = forecastData.map(item => `
+        <tr>
+            <td>${item.dateTime}</td>
+            <td>${item.temperature} °C</td>
+            <td>
+                ${item.weatherDescription} <br>
+                <img src="http://openweathermap.org/img/wn/${item.icon}@2x.png" alt="${item.weatherDescription}">
+            </td>
+        </tr>
+    `).join("");
 
+    document.getElementById("weatherOutput").innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Date-Time</th>
+                    <th>Temperature (°C)</th>
+                    <th>Weather Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${tableRows}
+            </tbody>
+        </table>
+    `;
+}
+
+function renderWeatherChart() {
     const ctx = document.getElementById("weatherChart").getContext("2d");
-    const labels = forecastData.map(item => {
-        const [date, time] = item.dateTime.split(" ");
-        return `${date} ${time}`;
-    });
+
+    const labels = forecastData.map(item => item.dateTime);
     const temperatures = forecastData.map(item => item.temperature);
 
     if (weatherChart) {
@@ -81,16 +78,14 @@ function displayChart() {
         type: "line",
         data: {
             labels: labels,
-            datasets: [
-                {
-                    label: "Temperature (°C)",
-                    data: temperatures,
-                    borderColor: "#6c5ce7",
-                    backgroundColor: "rgba(108, 92, 231, 0.2)",
-                    borderWidth: 2,
-                    tension: 0.4,
-                },
-            ],
+            datasets: [{
+                label: "Temperature (°C)",
+                data: temperatures,
+                borderColor: "#6c5ce7",
+                backgroundColor: "rgba(108, 92, 231, 0.2)",
+                borderWidth: 2,
+                tension: 0.4,
+            }],
         },
         options: {
             responsive: true,
@@ -99,15 +94,23 @@ function displayChart() {
                     position: "top",
                 },
             },
+            onClick: (event, elements) => {
+                if (elements.length > 0) {
+                    const dataIndex = elements[0].index;
+                    showWeatherDetails(dataIndex);
+                }
+            },
+            onClick: (e, elements) => {
+                if (elements.length > 0) {
+                    const { index } = elements[0]; // Get the index of the clicked point
+                    showWeatherDetails(index);
+                }
+            },
             scales: {
                 x: {
                     title: {
                         display: true,
                         text: "Date-Time",
-                    },
-                    ticks: {
-                        maxRotation: 45,
-                        minRotation: 45,
                     },
                 },
                 y: {
@@ -121,17 +124,30 @@ function displayChart() {
     });
 }
 
+function showWeatherDetails(index) {
+    const weatherList = document.getElementById("weatherList");
+    weatherList.innerHTML = ""; // Clear existing list
+
+    const selectedData = forecastData[index];
+    if (selectedData) {
+        const listItem = document.createElement("li");
+        listItem.classList.add("list-group-item");
+        listItem.innerHTML = `
+        <strong>${selectedData.dateTime}</strong><br>
+        Temperature: ${selectedData.temperature} °C<br>
+        Weather: ${selectedData.weatherDescription}<br>
+        <img src="http://openweathermap.org/img/wn/${selectedData.icon}@2x.png" alt="${selectedData.weatherDescription}">
+      `;
+        weatherList.appendChild(listItem);
+    }
+}
+
 function resetForm() {
-    // Clear the input field
     document.getElementById("cityInput").value = "";
-
-    // Clear the city name display
     document.getElementById("cityNameDisplay").textContent = "";
-
-    // Clear weather output
     document.getElementById("weatherOutput").innerHTML = "";
+    document.getElementById("weatherList").innerHTML = "";
 
-    // Clear the chart if it exists
     if (weatherChart) {
         weatherChart.destroy();
         weatherChart = null;
