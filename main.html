@@ -21,17 +21,18 @@
     </div>
     
     <div class="form-group">
-        <input type="text" id="cityInput" placeholder='Enter City Name (example: "Sungai Petani")'>
-        <br>
-        <p>City Name that you entered: <span id="cityNameDisplay" class="font-weight-bold text-success"></span></p>
+        <input type="text" id="cityInput" placeholder='Enter City Name (example: "Jitra")'>
+        <br><br><br>
         <button onclick="getWeather()">Get Forecast</button>
         <button onclick="displayChart()">Display in Line Chart</button>
         <button type="button" onclick="resetForm()">Reset</button>
+        <br>
+        <p>City Name that you entered: <span id="cityNameDisplay" class="font-weight-bold text-success"></span></p>
     </div>
 
     <div id="weatherOutput" class="weather-table"></div>
 
-    <div class="chart-section">
+    <div id="temperatureTrendContainer" style="display: none;">
         <p>Temperature Trend</p>
         <div class="chart-container">
             <canvas id="weatherChart"></canvas> 
