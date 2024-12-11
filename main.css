@@ -8,14 +8,14 @@ body {
 
 h1 {
     text-align: center;
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin: 20px 0;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 p {
     text-align: center;
-    font-size: 2.0rem;
+    font-size: 1.5rem;
     margin: 20px 0;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -23,34 +23,26 @@ p {
 .image-container {
     display: flex;
     justify-content: center;
-    /* Horizontally centers the content */
     margin-top: 20px;
-    /* Adds spacing above the image */
     margin-bottom: 20px;
-    /* Adds spacing below the image */
 }
 
 .centered-image {
-    width: 35%;
-    /* Scales the image to 20% of its container's width */
-    max-width: 35%;
-    /* Ensures the image doesn't become too large */
+    width: 60%; /* Makes the image larger on mobile */
+    max-width: 60%;
     height: auto;
-    /* Maintains aspect ratio */
     border-radius: 10px;
-    /* Optional: rounds the corners of the image */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    /* Optional: adds a subtle shadow */
 }
 
-
+/* Form styling */
 .form-group {
     text-align: center;
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 input[type="text"] {
-    width: 70%;
+    width: 85%;
     padding: 12px;
     border: none;
     border-radius: 30px;
