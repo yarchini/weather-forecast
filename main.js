@@ -1,8 +1,11 @@
 let forecastData = [];
 let weatherChart = null;
 
+// Function to handle getting weather data
 async function getWeather() {
     const city = document.getElementById("cityInput").value.trim();
+
+    // Validate city name input
     if (!city) {
         alert("Please enter a location!");
         return;
@@ -11,15 +14,28 @@ async function getWeather() {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=6cd6a70861da468f08217dacb3fd20a9`;
 
     try {
+        // Reset forecastData and weatherChart before new fetch
+        forecastData = [];
+        if (weatherChart) {
+            weatherChart.destroy();
+            weatherChart = null;
+        }
+
+        // Clear any previous table or chart data
+        document.getElementById("weatherOutput").innerHTML = "";
+        document.getElementById("temperatureTrendContainer").style.display = "none";
+
         const response = await fetch(apiUrl);
         const data = await response.json();
 
+        // Check if the city was found in the API response
         if (data.cod !== "200") {
             throw new Error(data.message || "City not found");
         }
 
         document.getElementById("cityNameDisplay").innerHTML = city;
 
+        // Populate forecastData
         forecastData = data.list.slice(0, 8).map(item => ({
             dateTime: item.dt_txt,
             temperature: (item.main.temp - 273.15).toFixed(2),
@@ -27,40 +43,40 @@ async function getWeather() {
             icon: item.weather[0].icon,
         }));
 
+        // Populate the weather data table
         const tableRows = forecastData.map(item => `
-                  <tr>
-                    <td>${item.dateTime}</td>
-                    <td>${item.temperature} °C</td>
-                    <td>
-                      ${item.weatherDescription} <br>
-                      <img src="http://openweathermap.org/img/wn/${item.icon}@2x.png" alt="${item.weatherDescription}">
-                    </td>
-                  </tr>
-                `).join("");
+            <tr>
+                <td>${item.dateTime}</td>
+                <td>${item.temperature} °C</td>
+                <td>
+                    ${item.weatherDescription} <br>
+                    <img src="http://openweathermap.org/img/wn/${item.icon}@2x.png" alt="${item.weatherDescription}">
+                </td>
+            </tr>
+        `).join("");
 
         document.getElementById("weatherOutput").innerHTML = `
-                  <table>
-                    <tr>
-                      <th>Date-Time</th>
-                      <th>Temperature (°C)</th>
-                      <th>Weather Description</th>
-                    </tr>
-                    ${tableRows}
-                  </table>
-                `;
+            <table>
+                <tr>
+                    <th>Date-Time</th>
+                    <th>Temperature (°C)</th>
+                    <th>Weather Description</th>
+                </tr>
+                ${tableRows}
+            </table>
+        `;
 
-        if (weatherChart) {
-            weatherChart.destroy();
-            weatherChart = null;
-        }
     } catch (error) {
+        // Handle errors (e.g., city not found)
         document.getElementById("weatherOutput").innerHTML = `
-                  <div class="error">Error: ${error.message}</div>
-                `;
+            <div class="error">Error: ${error.message}</div>
+        `;
     }
 }
 
+// Function to handle the display of the weather chart
 function displayChart() {
+    // Check if forecastData is empty
     if (!forecastData.length) {
         alert("Please fetch weather data first!");
         return;
@@ -76,10 +92,13 @@ function displayChart() {
     });
     const temperatures = forecastData.map(item => item.temperature);
 
+    // Destroy the previous chart if it exists
     if (weatherChart) {
         weatherChart.destroy();
+        weatherChart = null;
     }
 
+    // Create a new chart
     weatherChart = new Chart(ctx, {
         type: "line",
         data: {
@@ -130,6 +149,7 @@ function displayChart() {
     });
 }
 
+// Function to show weather details when a chart point is clicked
 function showWeatherDetails(index) {
     const weatherList = document.getElementById("weatherList");
     weatherList.innerHTML = ""; // Clear existing list
@@ -148,25 +168,26 @@ function showWeatherDetails(index) {
     }
 }
 
+// Function to reset the form and clear all displayed content
 function resetForm() {
     // Clear the input field
     document.getElementById("cityInput").value = "";
-
-    // Clear the city name display
     document.getElementById("cityNameDisplay").textContent = "";
 
-    // Clear weather output
+
+    // Clear weather output and hide temperature trend container
     document.getElementById("weatherOutput").innerHTML = "";
+    document.getElementById("temperatureTrendContainer").style.display = "none";
 
     // Clear the weather list
     document.getElementById("weatherList").innerHTML = "";
 
-    // Hide the temperature trend container
-    document.getElementById("temperatureTrendContainer").style.display = "none";
-
-    // Clear the chart if it exists
+    // Destroy the chart if it exists
     if (weatherChart) {
         weatherChart.destroy();
         weatherChart = null;
     }
+
+    // Clear forecastData
+    forecastData = [];
 }
